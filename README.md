@@ -1,210 +1,214 @@
-# Credit Card Fraud Detection Using Deep Learning
+# 💳 Credit Card Fraud Detection Using Deep Learning
 
-## Project Overview
+An end-to-end deep learning project for detecting fraudulent credit card transactions using multiple neural network architectures. This project implements and compares **Multi-Layer Perceptron (MLP), Convolutional Neural Network (CNN), Long Short-Term Memory (LSTM), and Autoencoder** models to identify fraudulent transactions in highly imbalanced financial datasets.
 
-This project focuses on detecting fraudulent credit card transactions using deep learning techniques. It explores different neural network architectures and loss functions to address the highly imbalanced nature of credit card transaction data.
+The project also explores different loss functions, validation-based decision threshold optimization, model evaluation, and Explainable AI techniques.
 
-The project implements and evaluates three deep learning architectures:
+## 📌 Project Overview
 
-- Multi-Layer Perceptron (MLP)
-- 1D Convolutional Neural Network (CNN)
-- Autoencoder
+Credit card fraud detection is a challenging classification problem due to the extremely imbalanced nature of transaction datasets, where fraudulent transactions represent only a very small percentage of all transactions.
 
-It also investigates different loss functions and validation-based decision threshold optimization to improve fraud detection performance.
+This project investigates how different deep learning architectures and loss functions perform in identifying fraudulent transactions while minimizing false positives and false negatives.
 
-## Dataset
+### Key Highlights
 
-**Dataset:** European Credit Card Fraud Detection
+- Implementation of four deep learning architectures.
+- Comparison of Binary Cross-Entropy, Weighted Binary Cross-Entropy, and Focal Loss.
+- Class imbalance handling using class weights.
+- Training, validation, and independent testing.
+- Validation-based decision threshold optimization.
+- Evaluation using Precision, Recall, F1-Score, PR-AUC, and ROC-AUC.
+- Confusion matrix visualization and model performance comparison.
+- Explainable AI using SHAP and LIME.
+- Genuine-transaction-based Autoencoder anomaly detection.
 
-**Source:** [Kaggle – Credit Card Fraud Detection Dataset](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+## 🧠 Deep Learning Architectures
 
-Dataset details:
+The project implements and evaluates the following architectures:
+
+| Model | Description |
+|---|---|
+| MLP | Fully connected neural network for binary classification. |
+| 1D CNN | Extracts local patterns from transaction feature vectors. |
+| LSTM | Evaluates recurrent neural network architecture on feature sequences. |
+| Autoencoder | Learns genuine transaction representations and detects anomalies using reconstruction error. |
+
+### Loss Function Comparison
+
+To investigate the impact of class imbalance, multiple loss functions are evaluated.
+
+**1. Binary Cross-Entropy (BCE)**
+
+Used as the baseline classification loss.
+
+**2. Weighted Binary Cross-Entropy**
+
+Assigns higher importance to fraudulent transactions through class weights.
+
+**3. Focal Loss**
+
+Focuses training on difficult-to-classify examples by reducing the contribution of well-classified examples.
+
+The MLP and CNN architectures are evaluated using all three loss functions, while the LSTM is trained using standard Binary Cross-Entropy.
+
+## 📊 Dataset
+
+The project uses the **Credit Card Fraud Detection Dataset**.
 
 - Total transactions: 284,807
 - Genuine transactions: 284,315
 - Fraudulent transactions: 492
-- Total input features: 30
+- Total features: 30
 - Target column: `Class`
 
-The `Class` column represents:
-- `0` – Genuine transaction
-- `1` – Fraudulent transaction
+### Dataset Features
 
-The dataset contains anonymized PCA-transformed features (V1–V28), along with Time and Amount.
+- `Time`: Time elapsed between the first transaction and the current transaction.
+- `Amount`: Transaction amount.
+- `V1`–`V28`: Anonymized features obtained through Principal Component Analysis (PCA).
+- `Class`: Transaction label.
+  - `0` – Genuine transaction
+  - `1` – Fraudulent transaction
 
-**Note:** The dataset CSV file is not included in this repository. Download `creditcard.csv` from Kaggle and upload it when prompted by the notebook.
+**Class Distribution:**
 
-## Technologies Used
+- Genuine transactions: 99.8273%
+- Fraudulent transactions: 0.1727%
 
-- Python
-- Google Colab
-- TensorFlow / Keras
-- NumPy
-- Pandas
-- Scikit-learn
-- Matplotlib
-- Seaborn
-- SHAP
-- LIME
+The dataset demonstrates the significant class imbalance involved in real-world fraud detection problems.
 
-## Deep Learning Models Implemented
+## ⚙️ Methodology
 
-### 1. Multi-Layer Perceptron (MLP)
+The project follows the following workflow:
 
-A feedforward neural network used for binary classification of genuine and fraudulent transactions.
+1. **Data Loading:** Load and inspect the credit card transaction dataset.
+2. **Exploratory Data Analysis:** Examine missing values, duplicate records, and class distribution.
+3. **Data Splitting:** Divide the dataset into stratified training, validation, and testing subsets.
+4. **Feature Scaling:** Apply StandardScaler to the `Time` and `Amount` features using training data only.
+5. **Class Imbalance Handling:** Calculate balanced class weights for fraudulent and genuine transactions.
+6. **Model Development:** Build and train MLP, CNN, LSTM, and Autoencoder architectures.
+7. **Model Training:** Train classification models using different loss functions.
+8. **Threshold Optimization:** Select classification thresholds using validation predictions.
+9. **Model Evaluation:** Evaluate all models on the untouched test dataset.
+10. **Explainability:** Apply SHAP and LIME to understand model predictions.
 
-Three MLP configurations were evaluated:
-- Standard Binary Cross-Entropy (BCE)
-- Class-Weighted Binary Cross-Entropy
-- Focal Loss
+### Dataset Splitting
 
-### 2. 1D Convolutional Neural Network (CNN)
+| Dataset | Percentage |
+|---|---:|
+| Training | 60% |
+| Validation | 20% |
+| Testing | 20% |
 
-A 1D CNN architecture was implemented to learn patterns from the transaction feature vectors.
+Stratified splitting is used to preserve the fraud-to-genuine transaction ratio across all subsets.
 
-Three CNN configurations were evaluated:
-- Standard Binary Cross-Entropy (BCE)
-- Class-Weighted Binary Cross-Entropy
-- Focal Loss
+## 🔍 Model Evaluation
 
-### 3. Autoencoder
+The models are evaluated using metrics suitable for highly imbalanced classification problems.
 
-An Autoencoder was trained using genuine transactions to learn their reconstruction patterns.
+| Metric | Purpose |
+|---|---|
+| Precision | Measures how many predicted fraudulent transactions are actually fraudulent. |
+| Recall | Measures how many actual fraudulent transactions are correctly identified. |
+| F1-Score | Harmonic mean of Precision and Recall. |
+| PR-AUC | Measures performance across precision-recall thresholds. |
+| ROC-AUC | Measures the ability to distinguish between genuine and fraudulent transactions. |
+| Confusion Matrix | Shows true positives, true negatives, false positives, and false negatives. |
 
-Transactions with higher reconstruction errors were treated as potential anomalies.
+PR-AUC, Recall, and F1-Score receive particular attention because accuracy alone can be misleading for highly imbalanced datasets.
 
-## Methodology
+## 🧩 Explainable AI
 
-The project follows these steps:
+To improve model interpretability, the project incorporates:
 
-1. Dataset upload and loading
-2. Dataset inspection and class imbalance analysis
-3. Stratified training, validation and test splitting
-4. Feature scaling using training data only
-5. Calculation of class weights
-6. Implementation of deep learning architectures
-7. Training MLP and CNN with different loss functions
-8. Training the Autoencoder on genuine transactions
-9. Decision threshold optimization using validation predictions
-10. Final evaluation on the untouched test set
-11. Performance comparison and visualization
-12. Model explainability using SHAP and LIME
+- **SHAP (SHapley Additive exPlanations):** Helps understand feature contributions to model predictions.
+- **LIME (Local Interpretable Model-Agnostic Explanations):** Explains individual transaction predictions through locally interpretable approximations.
 
-The dataset was divided into:
-- Training set: 60%
-- Validation set: 20%
-- Test set: 20%
+These techniques help provide insights into why a transaction may be classified as fraudulent.
 
-The random seed was set to 42 for reproducibility.
+## 🛠️ Technology Stack
 
-## Experimental Results
+| Category | Technologies |
+|---|---|
+| Programming Language | Python |
+| Deep Learning | TensorFlow, Keras |
+| Data Processing | NumPy, Pandas |
+| Machine Learning | Scikit-learn |
+| Data Visualization | Matplotlib, Seaborn |
+| Explainable AI | SHAP, LIME |
+| Development Environment | Google Colab |
 
-All models were evaluated on the held-out test set containing 56,962 transactions, including 99 fraudulent transactions.
-
-### Model Performance Comparison
-
-| Model | Precision | Recall | F1-score | PR-AUC | ROC-AUC |
-|---|---:|---:|---:|---:|---:|
-| MLP - BCE | 88.17% | 82.83% | 85.42% | 84.40% | 97.94% |
-| MLP - Weighted BCE | 87.50% | 77.78% | 82.35% | 72.68% | 97.54% |
-| MLP - Focal Loss | 87.78% | 79.80% | 83.60% | 84.02% | 97.81% |
-| CNN - BCE | 86.81% | 79.80% | 83.16% | 79.96% | 96.75% |
-| CNN - Weighted BCE | 65.71% | 69.70% | 67.65% | 64.74% | 95.50% |
-| CNN - Focal Loss | 88.37% | 76.77% | 82.16% | 79.64% | 97.08% |
-| Autoencoder | 43.67% | 69.70% | 53.70% | 48.69% | 96.18% |
-
-### Best Performing Model
-
-The MLP trained using standard Binary Cross-Entropy achieved the best overall F1-score and PR-AUC in this experiment.
-
-**MLP - BCE results:**
-
-- Precision: 88.17%
-- Recall: 82.83%
-- F1-score: 85.42%
-- PR-AUC: 84.40%
-- ROC-AUC: 97.94%
-
-### Confusion Matrix – MLP with BCE
-
-| | Predicted Genuine | Predicted Fraud |
-|---|---:|---:|
-| Actual Genuine | 56,852 | 11 |
-| Actual Fraud | 17 | 82 |
-
-Interpretation:
-
-- 82 fraudulent transactions were correctly detected.
-- 17 fraudulent transactions were missed.
-- 11 genuine transactions were incorrectly flagged as fraudulent.
-
-### Experimental Observations
-
-- MLP with standard BCE achieved the best overall F1-score and PR-AUC.
-- MLP with Focal Loss also achieved competitive performance.
-- CNN with Focal Loss achieved the highest precision among the evaluated models.
-- Class-weighted BCE did not outperform standard BCE in these experimental settings.
-- The Autoencoder detected anomalies but produced more false-positive predictions.
-- Validation-based threshold optimization was used instead of selecting thresholds using the test set.
-
-These results show that the tested imbalance-aware loss functions did not consistently improve performance over the standard BCE baseline.
-
-## Model Explainability
-
-SHAP and LIME were used to interpret model predictions.
-
-### SHAP
-
-SHAP (SHapley Additive exPlanations) was used to examine feature contributions to the predictions of the best-performing MLP model.
-
-The MLP model selected for SHAP analysis was chosen based on validation PR-AUC.
-
-### LIME
-
-LIME (Local Interpretable Model-agnostic Explanations) was used to explain an individual transaction prediction by examining the influence of its features.
-
-These techniques provide model interpretability and are not separate prediction models.
-
-## Visualizations and Outputs
-
-The executed notebook includes:
-
-- Dataset class distribution graph
-- Model training outputs
-- Training and validation loss curves
-- Confusion matrices for all evaluated models
-- Model performance comparison graph
-- SHAP summary plot
-- LIME individual prediction explanation
-
-The notebook contains the code and corresponding executed outputs.
-
-## How to Run the Project
-
-1. Clone or download this GitHub repository.
-2. Open the `.ipynb` notebook using Google Colab.
-3. Download the `creditcard.csv` dataset from Kaggle.
-4. Run the notebook cells in sequence.
-5. Upload the CSV file when the notebook requests it.
-6. Allow the models to train and evaluate.
-7. View the performance metrics, graphs, confusion matrices, SHAP and LIME explanations.
-
-## Repository Structure
+## 📂 Project Structure
 
 ```text
 Credit-Card-Fraud-Detection/
 │
-├── Credit_Card_Fraud_Detection.ipynb
-├── Credit_Card_Fraud_Detection_Report.pdf
-└── README.md
+├── Credit_Card_Fraud_Detection_With_LSTM.ipynb
+│
+├── README.md
+│
+└── creditcard.csv                 # Dataset (download separately)
 ```
 
-## Conclusion
+## 🚀 Getting Started
 
-This project demonstrates the application of deep learning techniques for credit card fraud detection under severe class imbalance.
+### 1. Clone the Repository
 
-MLP, CNN and Autoencoder architectures were implemented and evaluated using different loss functions and performance metrics.
+```bash
+git clone https://github.com/your-username/Credit-Card-Fraud-Detection.git
+```
 
-Among the evaluated configurations, MLP with standard Binary Cross-Entropy achieved the best overall performance, with an F1-score of 85.42% and PR-AUC of 84.40%.
+### 2. Navigate to the Project Directory
 
-The project also incorporated SHAP and LIME to improve the interpretability of model predictions.
+```bash
+cd Credit-Card-Fraud-Detection
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install numpy pandas matplotlib seaborn scikit-learn tensorflow shap lime
+```
+
+### 4. Download the Dataset
+
+Download the Credit Card Fraud Detection dataset from Kaggle:
+
+[Credit Card Fraud Detection Dataset – Kaggle](https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud)
+
+### 5. Run the Notebook
+
+Open the notebook using Google Colab:
+
+1. Upload `Credit_Card_Fraud_Detection_With_LSTM.ipynb`.
+2. Run the notebook cells sequentially.
+3. Upload the downloaded `creditcard.csv` file when prompted.
+4. Execute the training, evaluation, visualization, and explainability sections.
+
+**Google Colab:** [Open Google Colab](https://colab.research.google.com/)
+
+## ⚠️ Important Methodological Limitation
+
+The supplied dataset does not contain customer or card identifiers required to construct genuine per-customer transaction histories.
+
+Therefore, the LSTM model treats the 30 input features as a sequence of 30 steps, with one feature value per step.
+
+This is an exploratory LSTM architecture comparison rather than a true temporal transaction prediction model. Additionally, the anonymized PCA components (`V1`–`V28`) do not have an established temporal or spatial ordering.
+
+LSTM results should therefore be interpreted with this limitation in mind.
+
+## 🔮 Future Enhancements
+
+- Experiment with SMOTE, ADASYN, and Random Undersampling.
+- Explore Random Search and Bayesian Optimization for hyperparameter tuning.
+- Implement stratified k-fold cross-validation.
+- Investigate Transformer-based architectures.
+- Develop genuine sequential transaction models using customer-level transaction histories.
+- Build a real-time fraud detection application with an interactive dashboard.
+- Explore ensemble learning techniques to improve fraud detection performance.
+
+## 🎯 Project Objective
+
+The primary objective is to investigate and compare different deep learning architectures and training strategies for credit card fraud detection, particularly under extreme class imbalance.
+
+By combining neural network architectures, loss function comparisons, threshold optimization, and explainable AI, this project aims to provide a comprehensive experimental framework for understanding deep learning-based fraud detection.
