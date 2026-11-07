@@ -1,4 +1,4 @@
-# Credit Card Fraud Detection Using Deep Learning
+# 💳Credit Card Fraud Detection Using Deep Learning
 
 ## Project Overview
 
