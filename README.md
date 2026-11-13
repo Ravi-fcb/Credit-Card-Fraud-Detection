@@ -1,4 +1,4 @@
-# Credit Card Fraud Detection Using Deep Learning
+# 💳Credit Card Fraud Detection Using Deep Learning
 
 A deep learning project that detects fraudulent credit card transactions using **MLP, 1D CNN, LSTM, and Autoencoder** architectures. The project compares different loss functions, evaluates model performance under class imbalance, and uses SHAP and LIME for explainability.
 
